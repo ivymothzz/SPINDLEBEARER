@@ -1319,21 +1319,9 @@ MonoBehaviour:
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 999278323}
-        m_TargetAssemblyTypeName: RoundMenuRotator, Assembly-CSharp
-        m_MethodName: RotateInput
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 948704335}
-        m_TargetAssemblyTypeName: RoundMenuRotator, Assembly-CSharp
-        m_MethodName: RotateInput
+      - m_Target: {fileID: 1199325386}
+        m_TargetAssemblyTypeName: CombatButtonManager, Assembly-CSharp
+        m_MethodName: RotateMenuInput
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1351,13 +1339,13 @@ MonoBehaviour:
     m_ActionName: 'UI/Click[/Mouse/leftButton]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 948704336}
-        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: OpenButtonMenu
-        m_Mode: 2
+      - m_Target: {fileID: 1199325386}
+        m_TargetAssemblyTypeName: CombatButtonManager, Assembly-CSharp
+        m_MethodName: CloseAttacksMenu
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 999278324}
-          m_ObjectArgumentAssemblyTypeName: Menu, Assembly-CSharp
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1642,7 +1630,6 @@ GameObject:
   - component: {fileID: 948704334}
   - component: {fileID: 948704335}
   - component: {fileID: 948704336}
-  - component: {fileID: 948704337}
   m_Layer: 5
   m_Name: Attack Option Buttons
   m_TagString: Untagged
@@ -1719,23 +1706,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   close: 1
   openByDefault: 0
---- !u!111 &948704337
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 948704333}
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Animation: {fileID: 7400000, guid: 7f2c725b813839347ac3651099772e44, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: 7f2c725b813839347ac3651099772e44, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_UpdateMode: 0
-  m_CullingType: 0
 --- !u!1 &948787628
 GameObject:
   m_ObjectHideFlags: 0
@@ -2278,9 +2248,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1199325385}
+  - component: {fileID: 1199325386}
   - component: {fileID: 1199325384}
   - component: {fileID: 1199325383}
   - component: {fileID: 1199325382}
+  - component: {fileID: 1199325387}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -2373,6 +2345,43 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1199325386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199325381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fc55bbf9a223ab4f8b70499310cdf9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainMenu: {fileID: 999278323}
+  attacksMenu: {fileID: 948704335}
+  closeAttacks: {fileID: 0}
+--- !u!95 &1199325387
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199325381}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 54ef26d1e18182246a5e256b096ede70, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1210236022
 GameObject:
   m_ObjectHideFlags: 0
@@ -2456,13 +2465,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 999278324}
-        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: OpenButtonMenu
-        m_Mode: 2
+      - m_Target: {fileID: 1199325386}
+        m_TargetAssemblyTypeName: CombatButtonManager, Assembly-CSharp
+        m_MethodName: OpenAttacksMenu
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 948704336}
-          m_ObjectArgumentAssemblyTypeName: Menu, Assembly-CSharp
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

@@ -27,8 +27,8 @@ public class RoundMenuRotator : MonoBehaviour
 
     float targetRotation;
 
-    Button currentButton;
-    int currentButtonIndex = 1; // THIS MIGHT CAUSE ISSUES IF THE DEFAULTSELECTEDBUTTON IS NOT THE 2ND BUTTON IN THE BUTTONS ARRAY
+    [HideInInspector] public Button currentButton;
+    [HideInInspector] public int currentButtonIndex = 1; // THIS MIGHT CAUSE ISSUES IF THE DEFAULTSELECTEDBUTTON IS NOT THE 2ND BUTTON IN THE BUTTONS ARRAY
 
     private void Update()
     {

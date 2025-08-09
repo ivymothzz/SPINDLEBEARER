@@ -13,30 +13,38 @@ public class CombatButtonManager : MonoBehaviour
 
     private void Start()
     {
-        OpenButtonMenu(mainMenu, attacksMenu);
+        OpenButtonMenu(mainMenu);
+        CloseButtonMenu(attacksMenu);
     }
 
-    public void OpenButtonMenu(RoundMenuRotator menuToOpen, RoundMenuRotator menuToClose)
+    public void OpenButtonMenu(RoundMenuRotator menu)
     {
-        currentMenu = menuToOpen;
+        currentMenu = menu;
 
-        menuToClose.interactable = false;
-        menuToOpen.interactable = true;
+        menu.interactable = true;
 
-        for (int i = 0; i < menuToClose.buttons.Length; i++)
+        for (int i = 0; i < menu.buttons.Length; i++)
         {
-            menuToClose.buttons[i].GetComponent<Button>().interactable = false;
+            menu.buttons[i].GetComponent<Button>().interactable = true;
         }
 
-        for (int i = 0; i < menuToOpen.buttons.Length; i++)
+        currentMenu.defaultSelectedButton.GetComponent<Button>().Select();
+    }
+
+    public void CloseButtonMenu(RoundMenuRotator menu)
+    {
+        menu.interactable = false;
+
+        for (int i = 0; i < menu.buttons.Length; i++)
         {
-            menuToOpen.buttons[i].GetComponent<Button>().interactable = true;
+            menu.buttons[i].GetComponent<Button>().interactable = false;
         }
     }
 
     public void OpenAttacksMenu()
     {
-        OpenButtonMenu(attacksMenu, mainMenu);
+        OpenButtonMenu(attacksMenu);
+        CloseButtonMenu(mainMenu);
         attacksMenu.gameObject.SetActive(true);
         GetComponent<Animator>().Play("Attack Options Open");
     }
@@ -45,8 +53,8 @@ public class CombatButtonManager : MonoBehaviour
     {
         GetComponent<Animator>().Play("Attack Options Close");
 
-        OpenButtonMenu(mainMenu, attacksMenu);
-        mainMenu.currentButton.Select();
+        OpenButtonMenu(mainMenu);
+        CloseButtonMenu(attacksMenu);
     }
 
     void DisableAttacksMenu() { attacksMenu.gameObject.SetActive(false); }

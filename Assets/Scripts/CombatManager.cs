@@ -8,6 +8,9 @@ public class CombatManager : MonoBehaviour
 
     public CombatButtonManager buttonManager;
 
+    public GameObject screenGFX;
+    public GameObject damageIndicator;
+
     PlayerAttackGFX currentPlayerAttack;
 
     public void StartPlayerTurn()
@@ -16,11 +19,17 @@ public class CombatManager : MonoBehaviour
         buttonManager.CloseButtonMenu(buttonManager.mainMenu);
 
         Invoke(nameof(BashAttack), 0.25f);
+
+        screenGFX.GetComponent<Animator>().SetTrigger("Toggle Focus");
     }
 
     public void EndTurn()
     {
         buttonManager.OpenButtonMenu(buttonManager.mainMenu);
+
+        screenGFX.GetComponent<Animator>().SetTrigger("Toggle Focus");
+
+        Instantiate(damageIndicator, tempEnemy.transform.position, damageIndicator.transform.rotation);
     }
 
     public void BashAttack()

@@ -1,14 +1,14 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerAttackGFX : MonoBehaviour
+public class AttackGFX : MonoBehaviour
 {
     bool early;
     bool late;
 
     bool attacked;
 
-    [HideInInspector] public CombatManager combatManager;
+    [HideInInspector] public Turn origin;
 
     public void StartEarly()
     {
@@ -27,7 +27,7 @@ public class PlayerAttackGFX : MonoBehaviour
 
     public void End()
     {
-        combatManager.EndTurn();
+        origin.EndTurn();
 
         if (!attacked) Debug.Log("did not attack");
 
@@ -37,8 +37,6 @@ public class PlayerAttackGFX : MonoBehaviour
     public void AttackInput(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
-
-        Debug.Log("bloing");
 
         attacked = true;
 

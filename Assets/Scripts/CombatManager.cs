@@ -1,3 +1,5 @@
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,37 +11,60 @@ public class CombatManager : MonoBehaviour
     public CombatButtonManager buttonManager;
 
     public GameObject screenGFX;
-    public GameObject damageIndicator;
 
-    PlayerAttackGFX currentPlayerAttack;
+    AttackGFX currentPlayerAttack;
 
     Turn currentTurn;
+    PlayerTurn playerTurn = new PlayerTurn();
+
+    bool buttonsOpen = true;
 
     public void StartPlayerTurn()
     {
-        
-    }
+        playerTurn.manager = this;
+        playerTurn.target = tempEnemy.transform;
 
-    public void EndTurn()
-    {
-        buttonManager.OpenButtonMenu(buttonManager.mainMenu);
-
-        screenGFX.GetComponent<Animator>().SetTrigger("Toggle Focus");
-
-        Instantiate(damageIndicator, tempEnemy.transform.position, damageIndicator.transform.rotation);
-    }
-
-    public void BashAttack()
-    {
-        currentPlayerAttack = Instantiate(bashAttack, tempEnemy.transform.position, bashAttack.transform.rotation).GetComponent<PlayerAttackGFX>();
-        currentPlayerAttack.combatManager = this;
+        ChangeTurn(playerTurn);
     }
 
     public void ChangeTurn(Turn turn)
     {
-        currentTurn.EndTurn();
+        if (currentTurn != null) currentTurn.EndTurn();
         currentTurn = turn;
         currentTurn.StartTurn();
+    }
+
+    public void InstantianteAttack(AttackGFX attack, Transform target, Turn origin)
+    {
+        currentPlayerAttack = Instantiate(attack, target.transform.position, attack.transform.rotation);
+        currentPlayerAttack.origin = origin;
+    }
+
+    public void ToggleScreenFade()
+    {
+        screenGFX.GetComponent<Animator>().SetTrigger("Toggle Focus");
+    }
+
+    public void ToggleButtons()
+    {
+        if (buttonsOpen)
+        {
+            buttonManager.CloseAttacksMenu();
+            buttonManager.CloseButtonMenu(buttonManager.mainMenu);
+        }
+        else buttonManager.OpenButtonMenu(buttonManager.mainMenu);
+
+        buttonsOpen = !buttonsOpen;
+    }
+
+    public void WaitForAttack()
+    {
+        Invoke(nameof(CurrentTurnAttack), 0.25f);
+    }
+
+    void CurrentTurnAttack()
+    {
+        currentTurn.Attack();
     }
 
     public void Input(InputAction.CallbackContext context)
@@ -51,6 +76,8 @@ public class CombatManager : MonoBehaviour
 
 public abstract class Turn
 {
+    public Transform target;
+
     public abstract void StartTurn();
     public abstract void EndTurn();
     public abstract void Attack();
@@ -59,15 +86,24 @@ public abstract class Turn
 public class PlayerTurn : Turn
 {
     public CombatManager manager;
-    public override void StartTurn(CombatManager combatManager)
+
+    public override void StartTurn()
     {
-        manager = combatManager;
+        manager.ToggleScreenFade();
+        manager.ToggleButtons();
 
-        manager.buttonManager.CloseAttacksMenu();
-        manager.buttonManager.CloseButtonMenu(manager.buttonManager.mainMenu);
+        manager.WaitForAttack();
 
-        Invoke(nameof(Attack), 0.25f);
+    }
 
-        screenGFX.GetComponent<Animator>().SetTrigger("Toggle Focus");
+    public override void EndTurn()
+    {
+        manager.ToggleScreenFade();
+        manager.ToggleButtons();
+    }
+
+    public override void Attack()
+    {
+        manager.InstantianteAttack(manager.bashAttack.GetComponent<AttackGFX>(), target, this);
     }
 }

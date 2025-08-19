@@ -13,14 +13,11 @@ public class CombatManager : MonoBehaviour
 
     PlayerAttackGFX currentPlayerAttack;
 
+    Turn currentTurn;
+
     public void StartPlayerTurn()
     {
-        buttonManager.CloseAttacksMenu();
-        buttonManager.CloseButtonMenu(buttonManager.mainMenu);
-
-        Invoke(nameof(BashAttack), 0.25f);
-
-        screenGFX.GetComponent<Animator>().SetTrigger("Toggle Focus");
+        
     }
 
     public void EndTurn()
@@ -38,9 +35,39 @@ public class CombatManager : MonoBehaviour
         currentPlayerAttack.combatManager = this;
     }
 
+    public void ChangeTurn(Turn turn)
+    {
+        currentTurn.EndTurn();
+        currentTurn = turn;
+        currentTurn.StartTurn();
+    }
+
     public void Input(InputAction.CallbackContext context)
     {
         if (currentPlayerAttack == null) return;
         currentPlayerAttack.AttackInput(context);
+    }
+}
+
+public abstract class Turn
+{
+    public abstract void StartTurn();
+    public abstract void EndTurn();
+    public abstract void Attack();
+}
+
+public class PlayerTurn : Turn
+{
+    public CombatManager manager;
+    public override void StartTurn(CombatManager combatManager)
+    {
+        manager = combatManager;
+
+        manager.buttonManager.CloseAttacksMenu();
+        manager.buttonManager.CloseButtonMenu(manager.buttonManager.mainMenu);
+
+        Invoke(nameof(Attack), 0.25f);
+
+        screenGFX.GetComponent<Animator>().SetTrigger("Toggle Focus");
     }
 }

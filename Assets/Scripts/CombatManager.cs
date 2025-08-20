@@ -7,6 +7,7 @@ public class CombatManager : MonoBehaviour
 {
     public GameObject tempEnemy;
     public GameObject bashAttack;
+    public GameObject targetIndicator;
 
     public CombatButtonManager buttonManager;
 
@@ -17,7 +18,7 @@ public class CombatManager : MonoBehaviour
     Turn currentTurn;
     PlayerTurn playerTurn = new PlayerTurn();
 
-    bool buttonsOpen = true;
+    GameObject currentTargetIndicator;
 
     public void StartPlayerTurn()
     {
@@ -32,6 +33,8 @@ public class CombatManager : MonoBehaviour
         if (currentTurn != null) currentTurn.EndTurn();
         currentTurn = turn;
         currentTurn.StartTurn();
+
+        //Destroy(currentTargetIndicator);
     }
 
     public void InstantianteAttack(AttackGFX attack, Transform target, Turn origin)
@@ -40,26 +43,30 @@ public class CombatManager : MonoBehaviour
         currentPlayerAttack.origin = origin;
     }
 
+    public void InstantiateTargetIndicator(Transform target)
+    {
+        currentTargetIndicator = Instantiate(targetIndicator, target.transform.position, targetIndicator.transform.rotation);
+    }
+
     public void ToggleScreenFade()
     {
         screenGFX.GetComponent<Animator>().SetTrigger("Toggle Focus");
     }
 
-    public void ToggleButtons()
+    public void EnableButtons()
     {
-        if (buttonsOpen)
-        {
-            buttonManager.CloseAttacksMenu();
-            buttonManager.CloseButtonMenu(buttonManager.mainMenu);
-        }
-        else buttonManager.OpenButtonMenu(buttonManager.mainMenu);
+        buttonManager.OpenButtonMenu(buttonManager.mainMenu);
+    }
 
-        buttonsOpen = !buttonsOpen;
+    public void DisableButtons()
+    {
+        buttonManager.CloseAttacksMenu();
+        buttonManager.CloseButtonMenu(buttonManager.mainMenu);
     }
 
     public void WaitForAttack()
     {
-        Invoke(nameof(CurrentTurnAttack), 0.25f);
+        Invoke(nameof(CurrentTurnAttack), 0.4f);
     }
 
     void CurrentTurnAttack()
@@ -90,16 +97,18 @@ public class PlayerTurn : Turn
     public override void StartTurn()
     {
         manager.ToggleScreenFade();
-        manager.ToggleButtons();
+        manager.DisableButtons();
+        manager.InstantiateTargetIndicator(target);
 
         manager.WaitForAttack();
-
     }
 
     public override void EndTurn()
     {
         manager.ToggleScreenFade();
-        manager.ToggleButtons();
+        manager.EnableButtons();
+
+        
     }
 
     public override void Attack()

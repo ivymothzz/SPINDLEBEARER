@@ -8017,9 +8017,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tempEnemy: {fileID: 1629135796}
   bashAttack: {fileID: 8601079000375500601, guid: f86713de52e06014994cd225fcec6348, type: 3}
+  targetIndicator: {fileID: 8141355166640190815, guid: 3f133e88624cb374dae8be4b12c38cca, type: 3}
   buttonManager: {fileID: 1199325386}
   screenGFX: {fileID: 618753477}
-  damageIndicator: {fileID: 2546378733262959280, guid: fbc6b26a50477644180511b6286bee15, type: 3}
 --- !u!4 &1527957022
 Transform:
   m_ObjectHideFlags: 0

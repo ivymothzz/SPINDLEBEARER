@@ -6,7 +6,9 @@ using UnityEngine.InputSystem;
 public class CombatManager : MonoBehaviour
 {
     public GameObject tempEnemy;
+    public GameObject player;
     public GameObject bashAttack;
+    public GameObject freakAttack;
     public GameObject targetIndicator;
 
     public CombatButtonManager buttonManager;
@@ -17,8 +19,9 @@ public class CombatManager : MonoBehaviour
 
     Turn currentTurn;
     PlayerTurn playerTurn = new PlayerTurn();
+    EnemyTurn enemyTurn = new EnemyTurn();
 
-    GameObject currentTargetIndicator;
+    [HideInInspector] public GameObject currentTargetIndicator;
 
     public void StartPlayerTurn()
     {
@@ -28,9 +31,18 @@ public class CombatManager : MonoBehaviour
         ChangeTurn(playerTurn);
     }
 
+    public IEnumerator StartEnemyTurn()
+    {
+        enemyTurn.manager = this;
+        enemyTurn.target = player.transform;
+
+        yield return new WaitForSeconds(0.5f);
+
+        ChangeTurn(enemyTurn);
+    }
+
     public void ChangeTurn(Turn turn)
     {
-        if (currentTurn != null) currentTurn.EndTurn();
         currentTurn = turn;
         currentTurn.StartTurn();
 
@@ -105,14 +117,42 @@ public class PlayerTurn : Turn
 
     public override void EndTurn()
     {
-        manager.ToggleScreenFade();
-        manager.EnableButtons();
+        manager.currentTargetIndicator.GetComponent<Animator>().SetTrigger("Close");
+        //manager.StartEnemyTurn();
 
-        
+        manager.StartCoroutine(nameof(manager.StartEnemyTurn));
     }
 
     public override void Attack()
     {
         manager.InstantianteAttack(manager.bashAttack.GetComponent<AttackGFX>(), target, this);
+    }
+}
+
+public class EnemyTurn : Turn
+{
+    public CombatManager manager;
+
+    public override void StartTurn()
+    {
+        manager.InstantiateTargetIndicator(target);
+
+        manager.WaitForAttack();
+    }
+
+    public override void EndTurn()
+    {
+        manager.ToggleScreenFade();
+        manager.EnableButtons();
+
+        manager.tempEnemy.SetActive(true);
+
+        manager.currentTargetIndicator.GetComponent<Animator>().SetTrigger("Close");
+    }
+
+    public override void Attack()
+    {
+        manager.tempEnemy.SetActive(false);
+        manager.InstantianteAttack(manager.freakAttack.GetComponent<AttackGFX>(), target, this);
     }
 }

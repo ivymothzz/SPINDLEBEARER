@@ -478,7 +478,7 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.55
+  - time: 0
     functionName: StartEarly
     data: 
     objectReferenceParameter: {fileID: 0}
@@ -492,7 +492,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.73333335
+  - time: 0.71666664
     functionName: StartLate
     data: 
     objectReferenceParameter: {fileID: 0}

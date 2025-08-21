@@ -68,7 +68,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3428ad03a78e2d14c9e9a41d4c83c5b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  combatManager: {fileID: 0}
+  starsParticles: {fileID: 4162747393761300579, guid: d29c843ba14356c45bcff4e9f4c0c29f, type: 3}
 --- !u!1 &5271200720580613678
 GameObject:
   m_ObjectHideFlags: 0
